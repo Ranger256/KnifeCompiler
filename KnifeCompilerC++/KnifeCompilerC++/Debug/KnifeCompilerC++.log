@@ -1,0 +1,11 @@
+﻿  KnifeCompilerC++.cpp
+D:\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++.cpp(14,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Lexer.cpp
+D:\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++\Lexer.cpp(127,21): warning C4018: <: несоответствие типов со знаком и без знака
+D:\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++\Lexer.cpp(146,20): warning C4018: <: несоответствие типов со знаком и без знака
+D:\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++\Lexer.cpp(174,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Parser.cpp
+  Создание кода...
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(687,5): warning MSB8015: все исходные файлы устарели — принудительно повторяется сборка всех исходных файлов, так как содержимое "D:\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++\Debug\KnifeCompilerC++.tlog\CL.command.1.tlog" недопустимо.
+  LINK : не найден или не выполнена сборка D:\KnifeCompilerC++\KnifeCompilerC++\Debug\KnifeCompilerC++.exe при последней инкрементной компоновке; выполняется полная компоновка
+  KnifeCompilerC++.vcxproj -> D:\KnifeCompilerC++\KnifeCompilerC++\Debug\KnifeCompilerC++.exe
