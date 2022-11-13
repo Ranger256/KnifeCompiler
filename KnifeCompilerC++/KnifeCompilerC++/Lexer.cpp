@@ -1,4 +1,18 @@
 #include "Lexer.h"
+#define TYPE_VALUE_CONST(s) if (!s.empty() || ((isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) {	char* p;strtol(s.c_str(), &p, 10);if (*p == 0) return TOKEN_INT_VALUE;strtod(s.c_str(), &p);if (*p == 0.0f)return TOKEN_DOUBLE_VALUE;}
+
+int TypeValueConst(std::string s) {
+	if (!s.empty() || ((isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) {
+		char* p;
+		strtol(s.c_str(), &p, 10);
+		if (*p == 0) return TOKEN_INT_VALUE;
+
+		strtod(s.c_str(), &p);
+		if (*p == 0.0f)
+			return TOKEN_DOUBLE_VALUE;
+	}
+	return 0;
+}
 
 int lexan(std::string s) {
 	//symbols
@@ -62,7 +76,7 @@ int lexan(std::string s) {
 	{
 		return TOKEN_ASSIGNMENT_SS;
 	}
-
+	TYPE_VALUE_CONST(s);
 	//keywords
 
 	if (s == "if")
@@ -85,38 +99,61 @@ int lexan(std::string s) {
 
 	//values
 	if (s == "true" || s == "false") return TOKEN_BOOL_VALUE;
-	if (!s.empty() || ((isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) {
-		char* p;
-		strtol(s.c_str(), &p, 10);
-		if (*p == 0) return TOKEN_INT_VALUE;
-
-		strtod(s.c_str(), &p);
-		if (*p == 0.0f)
-			return TOKEN_DOUBLE_VALUE;
-	}
 
 	int p = getID(s);
 
-	if (p > 0)
-	{
-	
-		return TOKEN_ID;
-	}
-	else if (p == 0) {
-		if (tokens.size() > 0)
+		if (p > 0)
 		{
-			if (tokens[tokens.size() - 1] == TOKEN_INT_TYPE)
-			{
-				insert("", s, TOKEN_INT_TYPE);
-				return TOKEN_ID;
-			}
-			else
-			{
-				return 0;
-			}
+
+			return TOKEN_ID;
 		}
-		
-	}
+		else if (p == 0) {
+			if (ids.size() > 0)
+			{
+				int b = ids.size() - 2;
+				if (b >= 0)
+				{
+					if (ids[b].token == TOKEN_INT_TYPE || ids[b].token == TOKEN_DOUBLE_TYPE)
+					{
+					return TOKEN_TYPE_ID_ERROR;
+					}
+					else {
+						switch (ids[ids.size() - 1].token)
+						{
+						case TOKEN_INT_TYPE:
+							insert("", s, TOKEN_INT_TYPE);
+							return TOKEN_ID;
+							break;
+						case TOKEN_DOUBLE_TYPE:
+							insert("", s, TOKEN_DOUBLE_TYPE);
+							return TOKEN_ID;
+							break;
+						default:
+							return TOKEN_TYPE_ID_ERROR;
+							break;
+						}
+					}
+				}
+				else
+				{
+					switch (ids[ids.size() - 1].token)
+					{
+					case TOKEN_INT_TYPE:
+						insert("", s, TOKEN_INT_TYPE);
+						return TOKEN_ID;
+						break;
+					case TOKEN_DOUBLE_TYPE:
+						insert("", s, TOKEN_DOUBLE_TYPE);
+						return TOKEN_ID;
+						break;
+					default:
+						return TOKEN_TYPE_ID_ERROR;
+						break;
+					}
+				}
+			}
+
+		}
 
 	return 0;
 }
@@ -159,10 +196,13 @@ void razd(char c,std::string d, std::string *s, int i);
 void razd(char c,std::string d, std::string *s, int i) {
 	if (d[i] == c || d[i - s->length()] == c)
 	{
-		if (*s != "" && *s != " " && *s != "\t") {
-			tokens.push_back(lexan(*s));
+	   if (*s != "" && *s != " ")
+		{
+			ids.push_back(id{ "", *s, lexan(*s) });
+			//printf("%s\n", s->c_str());
+			*s = "";
 		}
-		*s = "";
+				
 	} 
 }
 
@@ -182,9 +222,10 @@ void lexanCode(std::string d) {
 		{
 			if (s != "" && s != " " && s != "\t")
 			{
-				if (zap)
-				{
-					tokens.push_back(lexan(s));
+				if (zap) {
+					//printf("%s\n", s.c_str());
+				    ids.push_back(id{ "", s, lexan(s) });
+					//s = "";
 				}
 				
 			}
@@ -196,9 +237,11 @@ void lexanCode(std::string d) {
 			zap = true;
 			if (s != "" && s != " " && s != "\t")
 			{
-				if (zap)
-				tokens.push_back(lexan(s));
-
+				if (zap) {
+					
+						ids.push_back(id{ "", s, lexan(s)});
+					s = "";
+				}
 			}
 
 			if (zap)
@@ -209,9 +252,10 @@ void lexanCode(std::string d) {
 			printf("%s\n", "gg");
 			if (s != "" && s != " " && s != "\t")
 			{
-				if (zap)
-				tokens.push_back(lexan(s));
-
+				if (zap) {
+						ids.push_back(id{ "", s, lexan(s)});
+					s = "";
+				}
 			}
 			if (zap)
 			s = "";
@@ -223,8 +267,11 @@ void lexanCode(std::string d) {
 			printf("%s\n", "gg");
 			if (s != "" && s != " " && s != "\t")
 			{
-				if (zap)
-					tokens.push_back(lexan(s));
+				if (zap) {
+				
+					ids.push_back(id{ "", s, lexan(s) });
+					s = "";
+				}
 
 			}
 			if (zap)
@@ -247,7 +294,7 @@ void lexanCode(std::string d) {
 			if (i == d.length() - 1 && s != " ")
 			{
 				if (zap) {
-					tokens.push_back(lexan(s));
+						ids.push_back(id{ "", s, lexan(s) });
 					s = "";
 				}
 			//	printf("%s", s.c_str());

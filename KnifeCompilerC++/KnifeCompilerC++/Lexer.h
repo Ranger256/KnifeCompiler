@@ -42,21 +42,26 @@
 #define TOKEN_BOOL_VALUE 1026
 #define TOKEN_STRING_VALUE 1027
 
+//ids
 #define TOKEN_ID 1028
 
+//errors
+#define TOKEN_TYPE_ID_ERROR -1001
+
 extern int lines;
-extern std::vector<int> tokens;
 static char ss[] = {";,*/+-(){}[]="};
 
-typedef struct {
+typedef struct ident{
 	std::string value;
 	std::string name;
 	int token;
+	std::vector<ident> childes;
 } id;
 
 extern std::vector<id> ids;
 
 void init();
+inline int TypeValueConst(std::string s);
 void insert(std::string value,std::string name, int token);
 int getID(std::string s);
 void lexanCode(std::string s);
