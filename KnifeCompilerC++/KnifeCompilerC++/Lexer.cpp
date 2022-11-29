@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Lexer.h"
 #define TYPE_VALUE_CONST(s) if (!s.empty() || ((isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) {	char* p;strtol(s.c_str(), &p, 10);if (*p == 0) return TOKEN_INT_VALUE;strtod(s.c_str(), &p);if (*p == 0.0f)return TOKEN_DOUBLE_VALUE;}
 

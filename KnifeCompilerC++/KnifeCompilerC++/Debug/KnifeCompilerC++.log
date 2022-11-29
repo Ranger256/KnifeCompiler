@@ -1,5 +1,5 @@
-﻿  KnifeCompilerC++.cpp
-  Parser.cpp
-D:\KnifeCompilerC++\KnifeCompilerC++\KnifeCompilerC++\Parser.cpp(27,20): warning C4018: <: несоответствие типов со знаком и без знака
-  Создание кода...
-  KnifeCompilerC++.vcxproj -> D:\KnifeCompilerC++\KnifeCompilerC++\Debug\KnifeCompilerC++.exe
+﻿  CompileAssemblerr.cpp
+d:\projectc++\kc\knifecompilerc++\knifecompilerc++\compileassemblerr.cpp(37): warning C4018: <: несоответствие типов со знаком и без знака
+d:\projectc++\kc\knifecompilerc++\knifecompilerc++\compileassemblerr.cpp(39): warning C4018: <: несоответствие типов со знаком и без знака
+d:\projectc++\kc\knifecompilerc++\knifecompilerc++\compileassemblerr.cpp(41): warning C4018: <: несоответствие типов со знаком и без знака
+  KnifeCompilerC++.vcxproj -> D:\projectC++\kc\KnifeCompilerC++\Debug\KnifeCompilerC++.exe

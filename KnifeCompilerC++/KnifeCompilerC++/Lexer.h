@@ -2,9 +2,6 @@
 #ifndef __LEXER__
 #define __LEXER__
 
-#include <string>
-#include <vector>
-
 //symbols
 #define TOKEN_END_SS 1001
 #define TOKEN_SPACE_SS 1002
@@ -55,7 +52,6 @@ typedef struct ident{
 	std::string value;
 	std::string name;
 	int token;
-	std::vector<ident> childes;
 } id;
 
 extern std::vector<id> ids;

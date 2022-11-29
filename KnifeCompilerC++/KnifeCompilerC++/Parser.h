@@ -4,14 +4,24 @@
 
 #include "Lexer.h"
 
-typedef struct {
-	id idNODE;
-} NODE;
+#define PARSING_SUCCESSFUL 0
+#define PARSING_ERROR
 
-extern NODE node;
+static int blocknum = 0;
+static int instrnum = 0;
 
-void parsing();
-void parsRecursion(int i);
+struct instruct {
+	std::vector<id> ins;
+};
+
+struct block {
+	std::vector<instruct> insblock;
+};
+
+extern std::vector<block> blocks;
+
+void parsInit();
+int parsing();
 
 #endif // !__PARSER__
 
