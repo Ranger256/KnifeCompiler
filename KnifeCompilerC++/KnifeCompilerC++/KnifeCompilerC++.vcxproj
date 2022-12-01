@@ -147,7 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="compileAssemblerIncludes.h" />
     <ClInclude Include="CompilerAssembler.h" />
+    <ClInclude Include="FunctionAssembler.h" />
     <ClInclude Include="KnifeCompilerC++.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Parser.h" />
@@ -156,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CompileAssemblerr.cpp" />
+    <ClCompile Include="FunctionAssembler.cpp" />
     <ClCompile Include="KnifeCompilerC++.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Parser.cpp" />

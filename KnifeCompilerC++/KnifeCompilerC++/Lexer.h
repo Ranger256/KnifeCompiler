@@ -52,6 +52,7 @@ typedef struct ident{
 	std::string value;
 	std::string name;
 	int token;
+	bool global;
 } id;
 
 extern std::vector<id> ids;
