@@ -3,6 +3,9 @@
 
 int k = 0;
 int b = 0;
+int bb = 0;
+
+int ad = 0;
 
 void parsInit() {
 	blocks.push_back(block{});
@@ -59,9 +62,11 @@ int parsing() {
 		switch (ids[i].token)
 		{
 		case TOKEN_BRACKET_CURLY_OPEN:
+			if (blocknum == 0)
+				bb = blocks.size();
+
 			k = instrnum;
 			instrnum = 0;
-			b = blocknum;
 			blocks.push_back(block{});
 			blocknum = blocks.size() - 1;
 			blocks[blocknum].type0 = defType0(b);
@@ -69,12 +74,18 @@ int parsing() {
 			break;
 		case TOKEN_BRACKET_CURLY_CLOSE:
 			instrnum = k;
-			blocknum = b;
-		//	blocknum--;
+			if (blocknum == bb)
+			{
+				blocknum = 0;
+				bb = 0;
+			}
+			else
+			{
+				blocknum--;
+			}
+
 			blocks[blocknum].insblock.push_back(instruct{});
-			//blocks[blocknum].insblock.push_back(instruct{});
 			instrnum = blocks[blocknum].insblock.size() - 1;
-			b--;
 			break;
 		case TOKEN_END_SS:
 			blocks[blocknum].insblock.push_back(instruct{});
@@ -100,6 +111,42 @@ int parsing() {
 
 				}
 			}
+			break;
+		case TOKEN_ID:
+
+			if (ids[i - 1].token == TOKEN_INT_TYPE )
+			{
+				if (ids[i + 1].token == TOKEN_BRACKET_ROUND_OPEN)
+				{
+					//ad = ids[i].token;
+					
+					while (true)
+					{
+						if (ids[ad].token == TOKEN_BRACKET_ROUND_CLOSE) {
+							break;
+						}
+						else
+						{
+							
+							ad++;
+						}
+
+					}
+					
+								if (ids[ad + 1].token == TOKEN_BRACKET_CURLY_OPEN) {
+									//printf("%s\n", "def");
+									ids[i].anndef = _COMPILE_ASSEMBLER_DEFINED;
+									ids[i].blc = blocknum + 1;
+									ad++;
+								}
+								if (ids[ad + 1].token == TOKEN_END_SS) {
+									//printf("%s\n", "ann");
+									ids[i].anndef = _COMPILE_ASSEMBLER_ANNOUNCEMENT;
+									ad++;
+								}	
+				}
+			}
+
 			break;
 		default:
 			break;

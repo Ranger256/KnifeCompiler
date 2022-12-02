@@ -88,6 +88,10 @@ int lexan(std::string s) {
 	{
 		return TOKEN_ELSE_WORD;
 	}
+	if (s == "return")
+	{
+		return TOKEN_RETURN;
+	}
 	
 	//types
 

@@ -14,11 +14,19 @@ static int instrnum = 0;
 struct instruct {
 	std::vector<id> ins;
 };
+#include <map>
+
+struct symbLocalBlock
+{
+	unsigned int number;
+	std::string value;
+};
 
 struct block {
 	std::vector<instruct> insblock;
 	int variableLocalByteSize;
 	int type0;
+	std::map<std::string, symbLocalBlock> localSymbols;
 };
 
 extern std::vector<block> blocks;

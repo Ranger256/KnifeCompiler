@@ -32,7 +32,8 @@ int CompileDefntFunctionToAssembler(int block, int inst, int k) {
 		asmcode.append("push eax \n ");
 		asmcode.append("push ebx \n ");
 		asmcode.append("sub esp, ");
-	//	asmcode.append(std::to_string(blocks[block + 1]));
+		asmcode.append(std::to_string(blocks[block + 1].variableLocalByteSize));
+		asmcode.append(" \n ");
 
 	}
 	else

@@ -13,12 +13,17 @@
 
 #define _COMPILE_ASSEMBLER_VARIABLE_NO_FIND_ERROR 6
 
+#define _COMPILE_ASSEMBLER_BLOCK_SUCCESSFUL 17
+#define _COMPILE_ASSEMBLER_BLOCK_ERROR 18
+
 #include "compileAssemblerIncludes.h"
+#include "FunctionAssembler.h"
 
 int CompileToAssembler();
+int CompileBlockToAssembler( int _blockst );
 
-int CompileNewVariableIntToAssembler(int block, int inst,int k, int value);
-int CompileSetVaraibleIntToAssembler(int block, int inst, int k, int value);
+int CompileNewVariableIntToAssembler(int blockst, int inst,int k, int valuev);
+int CompileSetVaraibleIntToAssembler(int blockst, int inst, int k, int valuev);
 
 #endif // !__COMPILER__
 

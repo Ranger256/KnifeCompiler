@@ -24,6 +24,7 @@
 //keywords
 #define TOKEN_IF_WORD 1009
 #define TOKEN_ELSE_WORD 1010
+#define TOKEN_RETURN 1029
 
 //types
 #define TOKEN_INT_TYPE 1018
@@ -53,6 +54,8 @@ typedef struct ident{
 	std::string name;
 	int token;
 	bool global;
+	int anndef;
+	int blc;
 } id;
 
 extern std::vector<id> ids;
