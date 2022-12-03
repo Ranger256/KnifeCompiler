@@ -15,14 +15,14 @@ std::map<std::string, symb> tablsymb;
 int main()
 {
 	// 
-	lexanCode("int i = 4; int main(){ int k = 5; int f = 3;} int hfghjghj = 543; int gh(){int hgf = 0;} int hgfdfd = 0;");
+	lexanCode("int i = 6; int main(){} int nam(){}");
 	parsInit();
 	parsing();
 	CompileToAssembler();
-   // printf("%d\n", blocks.size());
+  //  printf("%d\n", blocks[0].insblock[5].ins.size());
 	printf("%s\n", codeAssembler.c_str());
-	//printf("%s\n", blocks[0].insblock[2].ins[1].name.c_str());
-	//printf("%s\n", blocks[2].insblock[0].ins[1].name.c_str());
+	//printf("%d\n", blocks[0].insblock[0].ins[3].token);
+  //  printf("%s\n", blocks[1].parametrs[1].ins[1].name.c_str());
 	while (true)
 	{
 

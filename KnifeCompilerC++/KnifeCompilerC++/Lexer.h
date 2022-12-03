@@ -14,6 +14,9 @@
 #define TOKEN_BRACKET_SQUARE_OPEN 1015
 #define TOKEN_BRACKET_SQUART_CLOSE 1016
 #define TOKEN_ASSIGNMENT_SS 1017
+#define TOKEN_GREATER_SS 1030
+#define TOKEN_LESS_SS 1031
+#define TOKEN_EQUAL_SS 1032
 
 //operators
 #define TOKEN_DIVISION_OPERATOR 1005
@@ -47,7 +50,7 @@
 #define TOKEN_TYPE_ID_ERROR -1001
 
 extern int lines;
-static char ss[] = {";,*/+-(){}[]="};
+static char ss[] = {";,*/+-(){}[]=<>"};
 
 typedef struct ident{
 	std::string value;

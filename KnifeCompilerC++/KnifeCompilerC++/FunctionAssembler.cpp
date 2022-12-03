@@ -45,3 +45,23 @@ int CompileDefntFunctionToAssembler(int block, int inst, int k) {
 
 	return _COMPILE_FUNCTION_TO_ASSEMBLER_DEFINITION_SUCCESFULL;
 }
+
+int CompileCallFunctionToAssembler(int block, int inst, int k) {
+
+	std::string asmCode;
+
+	if (block > 0)
+	{
+		asmCode.append("call ");
+		asmCode.append( blocks[block].insblock[inst].ins[k].name.c_str() );
+		asmCode.append(" \n ");
+	}
+	else
+	{
+		return _COMPILE_FUNCTION_TO_ASSEMBLER_CALL_ERROR;
+	}
+
+	codeAssembler.append(asmCode.c_str());
+
+	return _COMPILE_FUNCTION_TO_ASSEMBLER_CALL_SUCCESSFULL;
+}

@@ -2,6 +2,7 @@
 #include"CompilerAssembler.h"
 
 int funcnum = 0;
+int blocklocvar = 0;
 
 int CompileNewVariableIntToAssembler(int blockst, int inst, int k, int valuev) {
 	std::string asmCode;
@@ -37,14 +38,14 @@ int CompileNewVariableIntToAssembler(int blockst, int inst, int k, int valuev) {
 		//}
 		//else
 		//{
-		blocks[blockst].localSymbols.insert(std::make_pair(blocks[blockst].insblock[inst].ins[k].name, symbLocalBlock{ blocks[blockst].localSymbols.size() * 2, std::to_string (valuev) }));
+		blocks[blocklocvar].localSymbols.insert(std::make_pair(blocks[blockst].insblock[inst].ins[k].name, symbLocalBlock{ blocks[blocklocvar].localSymbols.size() * 2, std::to_string (valuev) }));
 		//}
 		//printf("%d\n", blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name]);
 		// local variable
 		asmCode.append("mov dword[esp - ");
-		asmCode.append( std::to_string( blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name].number ) );
+		asmCode.append( std::to_string( blocks[blocklocvar].localSymbols[blocks[blockst].insblock[inst].ins[k].name].number ) );
 		asmCode.append("], ");
-		asmCode.append(blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name].value);
+		asmCode.append(blocks[blocklocvar].localSymbols[blocks[blockst].insblock[inst].ins[k].name].value);
 		asmCode.append(" \n ");
 	}
 
@@ -81,8 +82,8 @@ int CompileSetVaraibleIntToAssembler(int blockst, int inst, int k, int value) {
 	return _COMPILE_ASSEMBLER_VARIABLE_SET_INT_SUCCESSFUL;
 }
 
-int CompileBlockToAssembler(int _blockst) {
 
+int CompileBlockToAssembler(int _blockst) {
 	for (int j = 0; j < blocks[_blockst].insblock.size(); j++)
 	{
 		for (int k = 0; k < blocks[_blockst].insblock[j].ins.size(); k++)
@@ -90,7 +91,15 @@ int CompileBlockToAssembler(int _blockst) {
 
 			switch (blocks[_blockst].insblock[j].ins[k].token)
 			{
-
+			case TOKEN_RETURN:
+				printf("%s\n", "gg");
+				CompileReturnToAssemler(_blockst, j, k);
+				break;
+			case TOKEN_IF_WORD:
+			//	rec = true;
+				//CompileIfWordAnnToASM(_blockst, j, k);
+				//CompileIfWordDefToASM(_blockst, j, k);
+				break;
 			case TOKEN_ID:
 
 				if (blocks[_blockst].insblock[j].ins[k].anndef == _COMPILE_ASSEMBLER_DEFINED) {
@@ -137,7 +146,10 @@ int CompileBlockToAssembler(int _blockst) {
 					}
 					break;
 				case TOKEN_BRACKET_ROUND_OPEN:
-
+					if (k == 0)
+					{
+						CompileCallFunctionToAssembler(_blockst, j, k);
+					}
 					break;
 				default:
 					break;
@@ -155,100 +167,47 @@ int CompileBlockToAssembler(int _blockst) {
 
 int CompileToAssembler() {
 
-	//CompileBlockToAssembler(0);
 	int i = 0;
-	//int j = 0;
-	//int k = 0;
-	int h = 0;
-	int h1 = 0;
 	int h2 = 0;
-	//for (int i = 0; i < blocks.size(); i++)
-	//{
-		for(int j = 0; j < blocks[i].insblock.size(); j++)
+
+	for (int j = 0; j < blocks[i].insblock.size(); j++)
+	{
+		for (int k = 0; k < blocks[i].insblock[j].ins.size(); k++)
 		{
-			for (int k = 0; k < blocks[i].insblock[j].ins.size(); k++)
+			switch (blocks[i].insblock[j].ins[k].token)
 			{
-
-				switch (blocks[i].insblock[j].ins[k].token)
+			case TOKEN_ID:
+				if (blocks[i].insblock[j].ins[k - 1].token == TOKEN_INT_TYPE)
 				{
-
-				case TOKEN_ID:
-
-					if (blocks[i].insblock[j].ins[k ].anndef == _COMPILE_ASSEMBLER_DEFINED) {
+					if (blocks[i].insblock[j].ins[k].anndef == _COMPILE_ASSEMBLER_DEFINED) {
 						CompileDefntFunctionToAssembler(i, j, k);
-						h2++;
-						i = h2;
-						h = j;
-						h1 = k;
-						j = 0;
-						k = 0;
+						break;
+
 					}
-					if (blocks[i].insblock[j].ins[k ].anndef == _COMPILE_ASSEMBLER_ANNOUNCEMENT) {
+					if (blocks[i].insblock[j].ins[k].anndef == _COMPILE_ASSEMBLER_ANNOUNCEMENT) {
 						CompileAnucmntFunctionToAssembler(i, j, k);
-					}
-					
-					switch (blocks[i].insblock[j].ins[k + 1].token)
-					{
-					case TOKEN_ASSIGNMENT_SS:
-						if (0 <= k - 1)
-						{
-							if (tablsymb.find(blocks[i].insblock[j].ins[k].name.c_str()) == tablsymb.end()) {
-								// not found
-								if (blocks[i].insblock[j].ins[k - 1].token == TOKEN_INT_TYPE)
-								{
-									CompileNewVariableIntToAssembler(i, j, k, std::stoi(blocks[i].insblock[j].ins[k + 2].name));
-								}
-							}
-							else {
-								// found
-							}
-							
-						}
-						else
-						{
-							if (tablsymb.find(blocks[i].insblock[j].ins[k].name.c_str()) == tablsymb.end()) {
-								return _COMPILE_ASSEMBLER_VARIABLE_NO_FIND_ERROR;
-							}
-							else {
-								switch (tablsymb[blocks[i].insblock[j].ins[k].name].type)
-								{
-								case TOKEN_INT_TYPE:
-									CompileSetVaraibleIntToAssembler(i, j, k, std::stoi(blocks[i].insblock[j].ins[k + 2].name));
-									break;
-								default:
-									break;
-								}
-							}
-							
-						}
-						break;
-					case TOKEN_BRACKET_ROUND_OPEN:
-					    
-						break;
-					default:
 						break;
 					}
-					break;
-				default:
-					break;
-				}
-				if (i > 0)
-				{
-					//
-					if (j == blocks[i].insblock.size() - 2 && k == blocks[i].insblock[j].ins.size() - 1)
+
+					if (blocks[i].insblock[j].ins.size() - 1 > k)
 					{
-						j = h;
-						k = h1;
-						h = 0;
-						h1 = 0;
-						i = 0;
-						//printf("%s\n", "GG");
+						if (blocks[i].insblock[j].ins[k + 1].token == TOKEN_ASSIGNMENT_SS)
+						{
+							CompileNewVariableIntToAssembler(i, j, k, std::stoi(blocks[i].insblock[j].ins[k + 2].name));
+							break;
+						}
+					}
+					else
+					{
+						CompileNewVariableIntToAssembler(i, j, k, 0);
+						break;
 					}
 				}
+				break;
+			default:
+				break;
 			}
 		}
-	//}*/
-
+	}
 	return _COMPILE_ASSEMBLER_SUCCESSFUL;
 }
-

@@ -150,6 +150,7 @@
     <ClInclude Include="compileAssemblerIncludes.h" />
     <ClInclude Include="CompilerAssembler.h" />
     <ClInclude Include="FunctionAssembler.h" />
+    <ClInclude Include="IfAssembler.h" />
     <ClInclude Include="KnifeCompilerC++.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Parser.h" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="CompileAssemblerr.cpp" />
     <ClCompile Include="FunctionAssembler.cpp" />
+    <ClCompile Include="IfAssembler.cpp" />
     <ClCompile Include="KnifeCompilerC++.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Parser.cpp" />

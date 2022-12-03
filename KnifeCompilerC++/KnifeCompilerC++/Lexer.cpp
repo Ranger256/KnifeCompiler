@@ -17,6 +17,18 @@ int TypeValueConst(std::string s) {
 
 int lexan(std::string s) {
 	//symbols
+	if (s == "<")
+	{
+		return TOKEN_LESS_SS;
+	}
+	if (s == "~")
+	{
+		return TOKEN_EQUAL_SS;
+	}
+	if (s == ">")
+	{
+		return TOKEN_GREATER_SS;
+	}
 	if (s == ";")
 	{
 		return TOKEN_END_SS;

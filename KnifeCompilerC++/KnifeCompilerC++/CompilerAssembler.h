@@ -18,12 +18,15 @@
 
 #include "compileAssemblerIncludes.h"
 #include "FunctionAssembler.h"
+#include "ReturnAssembler.h"
 
 int CompileToAssembler();
 int CompileBlockToAssembler( int _blockst );
 
 int CompileNewVariableIntToAssembler(int blockst, int inst,int k, int valuev);
 int CompileSetVaraibleIntToAssembler(int blockst, int inst, int k, int valuev);
+
+//#include "IfAssembler.h"
 
 #endif // !__COMPILER__
 

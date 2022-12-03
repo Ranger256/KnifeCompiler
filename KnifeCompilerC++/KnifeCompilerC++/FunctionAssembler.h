@@ -8,10 +8,14 @@
 #define _COMPILE_FUNCTION_TO_ASSEMBLER_ANNOUNCEMENT_SUCCESFULL 9
 #define _COMPILE_FUNCTION_TO_ASSEMBLER_ANNOUNCEMENT_ERROR 10
 
+#define _COMPILE_FUNCTION_TO_ASSEMBLER_CALL_SUCCESSFULL 21
+#define _COMPILE_FUNCTION_TO_ASSEMBLER_CALL_ERROR 22
+
 #include "compileAssemblerIncludes.h"
 
 int CompileAnucmntFunctionToAssembler(int block, int inst, int k);
 int CompileDefntFunctionToAssembler(int block, int inst, int k);
+int CompileCallFunctionToAssembler(int block, int inst, int k);
 
 #endif // !_FUNCTION_ASM_
 

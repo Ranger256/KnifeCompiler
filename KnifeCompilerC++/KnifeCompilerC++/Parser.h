@@ -7,6 +7,10 @@
 
 #define PARSING_SUCCESSFUL 0
 #define PARSING_ERROR
+#define PARSING_BLOCK_PARAMS_SUCCESSFULL 23
+#define PARSING_BLOCK_PARAMS_ERROR 24
+#define PARSING_FUNCTION_W 25
+#define PARSING_VARIABLE_W 26
 
 static int blocknum = 0;
 static int instrnum = 0;
@@ -27,11 +31,13 @@ struct block {
 	int variableLocalByteSize;
 	int type0;
 	std::map<std::string, symbLocalBlock> localSymbols;
+	std::vector<instruct> parametrs;
 };
 
 extern std::vector<block> blocks;
 
 void parsInit();
+int createBlockParams(int blockn, int idsnum);
 int defType0(int bl);
 int parsing();
 
