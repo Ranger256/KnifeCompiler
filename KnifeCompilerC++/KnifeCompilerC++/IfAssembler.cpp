@@ -27,8 +27,20 @@ int CompileIfWordDefToASM(int _blockst, int inst, int k) {
 	asmCode.append("L");
 	asmCode.append(std::to_string(g));
 	asmCode.append(": \n ");
+	
 	codeAssembler.append(asmCode.c_str());
 	CompileBlockToAssembler(_blockst + 1);
+	asmCode = "";
+	//asmCode.append( " \n ");
+	g++;
+	asmCode.append("jmp L");
+	asmCode.append(std::to_string(g));
+	asmCode.append(" \n ");
+	asmCode.append("L");
+	asmCode.append(std::to_string(g));
+	asmCode.append(": \n ");
+	codeAssembler.append(asmCode.c_str());
+	
 
 	//printf("%d\n", blocks[2].type0);
 
@@ -50,6 +62,8 @@ int CompileIfWordLessToASM(int _blockst, int inst, int k) {
 	asmCode.append(blocks[_blockst].insblock[inst].ins[k + 1].name.c_str());
 	asmCode.append(" \n jg L");
      asmCode.append( std::to_string(g).c_str() );
+	 asmCode.append("\n jmp L");
+	 asmCode.append(std::to_string(g + 1).c_str());
 	asmCode.append(" \n ");
 
 	codeAssembler.append(asmCode.c_str());

@@ -15,7 +15,7 @@ std::map<std::string, symb> tablsymb;
 int main()
 {
 	// 
-	lexanCode("int i = 6; int main(){} int nam(){}");
+	lexanCode("int i = 6;int nam(); int main(){  int i = (5 + 3); } ");
 	parsInit();
 	parsing();
 	CompileToAssembler();
