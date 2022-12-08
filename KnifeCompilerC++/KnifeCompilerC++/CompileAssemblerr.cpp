@@ -69,6 +69,36 @@ int CompileNewLocalVariableIntToAssembler(int blockst, int inst, int k, int valu
 	return _COMPILE_ASSEMBLER_VARIABLE_NEW_LOCAL_SUCCESSFULL;
 }
 
+int CompileNewLocalVariableIntToAssembler(int blockst, int inst, int k, std::string valuev) {
+	std::string asmCode;
+
+	if (blockst == 0)
+	{
+		return _COMPILE_ASSEMBLER_VARIABLE_NEW_LOCAL_ERROR;
+	}
+	else if (blockst > 0) {
+		tablsymb.insert(std::make_pair(blocks[blockst].insblock[inst].ins[k].name, symb{ _COMPILE_ASSEMBLER_VARIABLE_NEW_INT_SUCCESSFUL, TOKEN_INT_TYPE, false }));
+		//if (blocks[blockst].localSymbols.size() < 1)
+		//{
+		//blocks[blockst].localSymbols.insert(std::make_pair(blocks[blockst].insblock[inst].ins[k].name, 2));
+		//}
+		//else
+		//{
+		blocks[blockst].localSymbols.insert(std::make_pair(blocks[blockst].insblock[inst].ins[k].name, symbLocalBlock{ blocks[blockst].localSymbols.size() * 2, valuev }));
+		//}
+		//printf("%d\n", blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name]);
+		// local variable
+		asmCode.append("mov dword[esp - ");
+		asmCode.append(std::to_string(blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name].number));
+		asmCode.append("], ");
+		asmCode.append(valuev);
+		asmCode.append(" \n ");
+	}
+
+	codeAssembler.append(asmCode.c_str());
+	return _COMPILE_ASSEMBLER_VARIABLE_NEW_LOCAL_SUCCESSFULL;
+}
+
 int CompileSetGlobalVaraibleIntToAssembler(int blockst, int inst, int k, int value) {
 
 	std::string asmCode;
@@ -145,11 +175,51 @@ int CompileBlockToAssembler(int _blockst) {
 					printf("%s\n", "GG");
 					if (blocks[_blockst].insblock[j].ins.size() - 1  >= k + 2 )
 					{
-						CompileNewLocalVariableIntToAssembler(_blockst, j, k, std::stoi( blocks[_blockst].insblock[j].ins[k + 2].name ));
+						codeAssembler.append("mov edx, 0 \n ");
+						int top = blocks[_blockst].insblock[j].ins.size() - 1;
+						for (int ki = top; ki >= k + 2; ki--)
+						{
+							switch (blocks[_blockst].insblock[j].ins[ki].token)
+							{
+							case TOKEN_PLUS_OPERATOR:
+								
+								if (blocks[_blockst].insblock[j].ins[ki + 1].name != "+")
+								{
+									codeAssembler.append("add edx, ");
+									if (tablsymb[ blocks[_blockst].insblock[j].ins[ki + 1].name].global)
+									{
+										codeAssembler.append(blocks[_blockst].insblock[j].ins[ki + 1].name.c_str());
+									}
+									else
+									{
+										codeAssembler.append(std::to_string(tablsymb[blocks[_blockst].insblock[j].ins[ki + 1].name].numStackLocal));
+									}
+									
+									codeAssembler.append(" \n ");
+								}
+								if (blocks[_blockst].insblock[j].ins[ki + 2].name != "+")
+								{
+									codeAssembler.append("add edx, ");
+									if (tablsymb[blocks[_blockst].insblock[j].ins[ki + 2].name].global)
+									{
+										codeAssembler.append(blocks[_blockst].insblock[j].ins[ki + 2].name.c_str());
+									}
+									else
+									{
+										codeAssembler.append(std::to_string(tablsymb[blocks[_blockst].insblock[j].ins[ki + 2].name].numStackLocal));
+									}
+								}
+								break;
+							default:
+								break;
+							}
+						}
+						
+						CompileNewLocalVariableIntToAssembler(_blockst, j, k, "edx");
 					}
 					else
 					{
-						CompileNewLocalVariableIntToAssembler(_blockst, j,k, 0);
+						CompileNewLocalVariableIntToAssembler(_blockst, j, k, 0);
 					}
 					break;
 				default:
@@ -175,6 +245,7 @@ int CompileToAssembler() {
 	{
 		for (int k = 0; k < blocks[i].insblock[j].ins.size(); k++)
 		{
+			printf("%s\n", blocks[i].insblock[0].ins[3].name.c_str());
 			switch (blocks[i].insblock[j].ins[k].token)
 			{
 			case TOKEN_ID:

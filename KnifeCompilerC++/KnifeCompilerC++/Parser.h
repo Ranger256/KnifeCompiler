@@ -4,6 +4,7 @@
 
 #include "Lexer.h"
 #include "compileAssemblerIncludes.h"
+#include "MathParser.h"
 
 #define PARSING_SUCCESSFUL 0
 #define PARSING_ERROR

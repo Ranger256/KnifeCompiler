@@ -34,6 +34,9 @@ int CompileSetGlobalVaraibleIntToAssembler(int blockst, int inst, int k, int val
 int CompileNewLocalVariableIntToAssembler(int blockst, int inst, int k, int valuev);
 int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, int valuev);
 
+int CompileNewLocalVariableIntToAssembler(int blockst, int inst, int k, std::string valuev);
+int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, std::string valuev);
+
 #include "IfAssembler.h"
 
 #endif // !__COMPILER__

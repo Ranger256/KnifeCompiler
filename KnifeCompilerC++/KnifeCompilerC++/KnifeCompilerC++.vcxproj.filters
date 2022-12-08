@@ -48,6 +48,9 @@
     <ClInclude Include="MathParser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="MathOperations.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +78,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="MathParser.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="MathOperations.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

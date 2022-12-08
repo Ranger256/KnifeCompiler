@@ -4,10 +4,9 @@
 int k = 0;
 int b = 0;
 int bb = 0;
-int ad = 0;
-
 int adids = 0;
 int idn = 0;
+int ad = 0;
 
 void parsInit() {
 	blocks.push_back(block{});
@@ -15,15 +14,17 @@ void parsInit() {
 }
 
 int DADC(int idsi) {
-
 	if (ids[idsi + 1].token == TOKEN_BRACKET_ROUND_OPEN)
 	{
 		adids = idsi;
+
+		ad = idsi;
 
 		while (true)
 		{
 			if (ids[ad].token == TOKEN_BRACKET_ROUND_CLOSE) {
 				idn = ad - 1;
+				ad++;
 				break;
 			}
 			else
@@ -33,18 +34,19 @@ int DADC(int idsi) {
 			}
 
 		}
-		if (ids[ad + 1].token == TOKEN_BRACKET_CURLY_OPEN && ids[idsi - 1].token == TOKEN_INT_TYPE) {
-			//printf("%s\n", "def");
+		ad++;
+		if (ids[ad - 1].token == TOKEN_BRACKET_CURLY_OPEN && ids[idsi - 1].token == TOKEN_INT_TYPE) {
+			
 			ids[idsi].anndef = _COMPILE_ASSEMBLER_DEFINED;
 			ids[idsi].blc = blocknum + 1;
 			ad++;
 		}
-		if (ids[ad + 1].token == TOKEN_END_SS && ids[idsi - 1].token == TOKEN_INT_TYPE) {
+		if (ids[ad - 1].token == TOKEN_END_SS && ids[idsi - 1].token == TOKEN_INT_TYPE) {
 			//printf("%s\n", "ann");
 			ids[idsi].anndef = _COMPILE_ASSEMBLER_ANNOUNCEMENT;
 			ad++;
 		}
-		if (ids[ad+1].token == TOKEN_END_SS)
+		if (ids[ad - 1].token == TOKEN_END_SS)
 		{
 			ids[idsi].anndef = _COMPILE_ASSEMBLER_CALLING;
 			ad++;
@@ -173,58 +175,6 @@ int parsing() {
 		
 		switch (ids[i].token)
 		{
-		case TOKEN_BRACKET_ROUND_OPEN:
-			adbrc = i;
-			while (true)
-			{
-				if (ids[adbrc].token == TOKEN_BRACKET_ROUND_CLOSE)
-				{
-					break;
-				}
-				else
-				{
-					//i++;
-					adbrc++;
-				}
-			}
-
-			if (ids[adbrc + 1].token == TOKEN_BRACKET_CURLY_OPEN)
-			{
-				break;
-			}
-			else
-			{
-				
-				int gdf = 0;
-
-				for ( int ig = i + 1; ig < adbrc; ig++ )
-				{
-
-					switch (ids[ig].token)
-					{
-					case  TOKEN_INT_VALUE:
-						if (ids[ig + 1].token == TOKEN_PLUS_OPERATOR)
-						{
-							switch (ids[ig + 2].token)
-							{
-							case TOKEN_INT_VALUE:
-								gdf = std::stoi(ids[ig].name) + std::stoi(ids[ig + 2].name);
-								blocks[blocknum].insblock[instrnum].ins.push_back(id{"", std::to_string(gdf), TOKEN_INT_VALUE });
-								printf("%s\n", blocks[blocknum].insblock[instrnum].ins[blocks[blocknum].insblock[instrnum].ins.size() - 1].name.c_str());
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					default:
-						break;
-					}
-
-
-				}
-			}
-			break;
 		case TOKEN_BRACKET_CURLY_OPEN:
 			if (blocknum == 0)
 				bb = blocks.size();
@@ -286,8 +236,37 @@ int parsing() {
 
 				}
 			}
+			if (ids[i - 1].token == TOKEN_ID)
+			{
+				adbrc = i;
+				std::vector<id> mv1;
+				while (true) {
+					if (ids[adbrc + 1].token == TOKEN_END_SS)
+					{
+						break;
+					}
+					else
+					{
+						adbrc++;
+						mv1.push_back(ids[adbrc]);
+					}
+					
+				}
+				i = adbrc;
+				std::vector<id> mv;
+				ParsingMathExpr(mv, mv1);
+				blocks[blocknum].insblock[instrnum].ins.push_back(id{ "", "=", TOKEN_ASSIGNMENT_SS });
+				for (int iggg = 0; iggg < mv.size(); iggg++)
+				{
+					if (mv[iggg].token != TOKEN_BRACKET_CURLY_CLOSE && mv[iggg].token != TOKEN_BRACKET_CURLY_OPEN && mv[iggg].token != TOKEN_END_SS && mv[iggg].token != TOKEN_BRACKET_ROUND_CLOSE && mv[iggg].token != TOKEN_BRACKET_ROUND_OPEN) {
+						blocks[blocknum].insblock[instrnum].ins.push_back(mv[iggg]);
+					}
+				     
+				}
+			}
 			break;
 		case TOKEN_ID:
+			
 			DADC(i);
 			break;  
 		case TOKEN_IF_WORD:
