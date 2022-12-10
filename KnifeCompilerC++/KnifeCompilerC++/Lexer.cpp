@@ -281,7 +281,6 @@ void lexanCode(std::string d) {
 
 		}
 		else if ((d[i] == '/' && d[i + 1] == '*') || d[i] == '\t') {
-			printf("%s\n", "gg");
 			if (s != "" && s != " " && s != "\t")
 			{
 				if (zap) {

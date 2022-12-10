@@ -8,6 +8,26 @@ void CreatePreorOP(std::map<int, int> &prs) {
 	prs[TOKEN_DIVISION_OPERATOR] = 2;
 }
 
+int CreateOrdersNumbersVariables(std::vector<id> &inse, std::vector<id> insl) {
+
+	std::vector<id> nums;
+	std::vector<id> vars;
+
+	for (int i = 0; i < insl.size(); i++)
+	{
+		if (insl[i].token == TOKEN_ID)
+		{
+			vars.push_back(insl[i]);
+		}
+		if (insl[i].token = TOKEN_INT_VALUE)
+		{
+			nums.push_back(insl[i]);
+		}
+	}
+
+	return PARSING_MATH_CREATE_ORDER_NUMBERS_VARIABLES_SUCCESSFULL;
+}
+
 int CreatePostfixTokens(std::vector<id> &inse, std::vector<id> insl) {
 	std::map<int, int> priorOP;
 	CreatePreorOP(priorOP);

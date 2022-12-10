@@ -118,13 +118,20 @@ int createBlockParams(int blockn, int idsnum) {
 
 		for (int i = adids + 1; i < idsnum - 1; i++)
 		{
-			if (ids[i].token == TOKEN_END_SS)
+			if (ids[i].token == TOKEN_INT_TYPE)
 			{
+				blocks[blocknum].variableLocalByteSize += 4;
+			}
+			if (ids[i].token == TOKEN_COMMA_SS)
+			{
+				//std::vector<id> gf;
+				
 				p.push_back(instruct{});
-				inad++;
+			    inad++;
+				//p[inad]
 			}
 
-			if (ids[i].token != TOKEN_END_SS && ids[i].token != TOKEN_BRACKET_ROUND_OPEN && ids[i].token != TOKEN_BRACKET_ROUND_CLOSE)
+			if (ids[i].token != TOKEN_END_SS && ids[i].token != TOKEN_BRACKET_ROUND_OPEN && ids[i].token != TOKEN_BRACKET_ROUND_CLOSE && ids[i].token != TOKEN_COMMA_SS)
 			{
 				p[inad].ins.push_back(ids[i]);
 			}
@@ -186,7 +193,7 @@ int parsing() {
 			//printf("%s\n", blocks[blocknum].insblock[blocks[blocknum].insblock.size() - 1].ins[0].name.c_str());
 			blocks.push_back(block{});
 			blocknum = blocks.size() - 1;
-			//blocks[blocknum].type0 = defType0(blocknum - 1);
+			blocks[blocknum].type0 = defType0(blocknum - 1);
 			blocks[blocknum].insblock.push_back(instruct{});
 			createBlockParams(blocknum, i);
 			//if (ids[adids - 1].token == TOKEN_ID)

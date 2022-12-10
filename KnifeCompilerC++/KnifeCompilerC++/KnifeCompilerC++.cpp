@@ -15,7 +15,7 @@ std::map<std::string, symb> tablsymb;
 int main()
 {
 	// 
-	lexanCode("int i = 5; int kg = 3; int func(){ int k = 4 + 6 + i + k ;}");
+	lexanCode("int i = 5; int kg = 3; int func(int f, int d){ int g = 5; f = 5 + i;}");
 	//std::vector<id> fs;
 	//std::vector<id> f;
 	//printf("%d\n", blocks[0].insblock[0].ins.size());
@@ -29,7 +29,6 @@ int main()
 	//f.push_back(ids[20 + 5]);
 	//f.push_back(ids[21 + 5]);
 	//ParsingMathExpr (fs, f);
-
 	parsInit();
 	parsing();
 	CompileToAssembler();
@@ -40,8 +39,8 @@ int main()
 	//}
 	//CreatePostfixTokens(ids, ids);
 	printf("%s\n", codeAssembler.c_str());
-	//printf("%d\n", blocks[0].insblock[0].ins[3].token);
-  //  printf("%s\n", blocks[1].parametrs[1].ins[1].name.c_str());
+	//printf("%d\n", blocks[1].insblock[0].ins[0].anndef);
+   //printf("%d\n", blocks[1].parametrs[0].ins[1].name.c_str());
 	while (true)
 	{
 

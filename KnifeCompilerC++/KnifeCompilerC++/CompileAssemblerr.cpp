@@ -128,7 +128,7 @@ int CompileSetGlobalVaraibleIntToAssembler(int blockst, int inst, int k, int val
 	return _COMPILE_ASSEMBLER_VARIABLE_SET_INT_SUCCESSFUL;
 }
 
-int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, int value) {
+int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k) {
 	std::string asmCode;
 	if (tablsymb[blocks[blockst].insblock[inst].ins[k].name].type0 != _COMPILE_ASSEMBLER_FUNCTION)
 	{
@@ -138,7 +138,45 @@ int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, int valu
 		}
 		else
 		{
-
+			//asmCode.append("mov edx, 0 \n ");
+			int top = blocks[blockst].insblock[inst].ins.size() - 1;
+			if (k + 3 < top) {
+				codeAssembler.append("mov edx, 0 \n ");
+				CompileSetValueVariable(blockst, inst, k, top);
+				asmCode.append("mov dword[esp - ");
+				asmCode.append(std::to_string(blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name].number));
+				asmCode.append("], edx");
+			}
+			else
+			{
+				switch (blocks[blockst].insblock[inst].ins[top].token)
+				{
+				case TOKEN_INT_VALUE:
+					asmCode.append("mov dword[esp - ");
+					asmCode.append(std::to_string(blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name].number));
+					asmCode.append("], ");
+					asmCode.append( blocks[blockst].insblock[inst].ins[top].name.c_str() );
+					asmCode.append(" \n ");
+					break;
+				case TOKEN_ID:
+					codeAssembler.append("mov edx, 0 \n ");
+					if (tablsymb[blocks[blockst].insblock[inst].ins[top].name].global) {
+						codeAssembler.append("mov edx, [");
+						codeAssembler.append(blocks[blockst].insblock[inst].ins[top].name.c_str());
+						codeAssembler.append("] \n ");
+					}
+					else
+					{
+						//	codeAssembler.append("mov edx, 0 \n ");
+						CompileTakeValueLocalVariableToAssembler(blockst, blocks[blockst].insblock[inst].ins[top].name);
+						codeAssembler.append("mov edx, eax \n ");
+					}
+				//	CompileNewLocalVariableIntToAssembler(_blockst, j, k, "edx");
+					break;
+				default:
+					break;
+				}
+			}
 		}
 	}
 	else
@@ -151,6 +189,17 @@ int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, int valu
 
 
 int CompileBlockToAssembler(int _blockst) {
+
+	//if (blocks[_blockst].type0 == _COMPILE_ASSEMBLER_FUNCTION) {
+		//for (int i = 0; i < blocks[_blockst].parametrs.size(); i++)
+		//{
+			//for (int j = 0; j < blocks[_blockst].parametrs[i].ins.size(); j++)
+			//{
+				//tablsymb.insert(std::make_pair(blocks[_blockst].parametrs[i].ins[j].name, symb{ _COMPILE_ASSEMBLER_VARIABLE_NEW_INT_SUCCESSFUL, TOKEN_INT_TYPE, false }));
+			//} 
+		//}
+	//}
+
 	for (int j = 0; j < blocks[_blockst].insblock.size(); j++)
 	{
 		for (int k = 0; k < blocks[_blockst].insblock[j].ins.size(); k++)
@@ -171,51 +220,52 @@ int CompileBlockToAssembler(int _blockst) {
 				case _COMPILE_ASSEMBLER_CALLING:
 					CompileCallFunctionToAssembler(_blockst, j, k);
 					break;
+				case _COMPILE_ASSEMBLER_SET_VARIABLE:
+				
+					CompileSetLocalVariableIntToAssembler(_blockst, j, k);
+					break;
 				case _COMPILE_ASSEMBLER_NEW_VARIBLE:
-					printf("%s\n", "GG");
+					//printf("%s\n", "GG");
 					if (blocks[_blockst].insblock[j].ins.size() - 1  >= k + 2 )
 					{
-						codeAssembler.append("mov edx, 0 \n ");
+						
+						
 						int top = blocks[_blockst].insblock[j].ins.size() - 1;
-						for (int ki = top; ki >= k + 2; ki--)
+					
+						if (k + 3 < top)
 						{
-							switch (blocks[_blockst].insblock[j].ins[ki].token)
+							codeAssembler.append("mov edx, 0 \n ");
+							CompileSetValueVariable(_blockst, j, k, top);
+							CompileNewLocalVariableIntToAssembler(_blockst, j, k, "edx");
+						}
+						else
+						{
+							
+							switch (blocks[_blockst].insblock[j].ins[top].token)
 							{
-							case TOKEN_PLUS_OPERATOR:
-								
-								if (blocks[_blockst].insblock[j].ins[ki + 1].name != "+")
-								{
-									codeAssembler.append("add edx, ");
-									if (tablsymb[ blocks[_blockst].insblock[j].ins[ki + 1].name].global)
-									{
-										codeAssembler.append(blocks[_blockst].insblock[j].ins[ki + 1].name.c_str());
-									}
-									else
-									{
-										codeAssembler.append(std::to_string(tablsymb[blocks[_blockst].insblock[j].ins[ki + 1].name].numStackLocal));
-									}
-									
-									codeAssembler.append(" \n ");
+							case TOKEN_INT_VALUE:
+								CompileNewLocalVariableIntToAssembler(_blockst, j, k, blocks[_blockst].insblock[j].ins[top].name);
+								break;
+							case TOKEN_ID:
+								if (tablsymb[blocks[_blockst].insblock[j].ins[top].name].global) {
+									codeAssembler.append("mov edx, [");
+									codeAssembler.append(blocks[_blockst].insblock[j].ins[top].name.c_str());
+									codeAssembler.append("] \n ");
 								}
-								if (blocks[_blockst].insblock[j].ins[ki + 2].name != "+")
+								else
 								{
-									codeAssembler.append("add edx, ");
-									if (tablsymb[blocks[_blockst].insblock[j].ins[ki + 2].name].global)
-									{
-										codeAssembler.append(blocks[_blockst].insblock[j].ins[ki + 2].name.c_str());
-									}
-									else
-									{
-										codeAssembler.append(std::to_string(tablsymb[blocks[_blockst].insblock[j].ins[ki + 2].name].numStackLocal));
-									}
+								//	codeAssembler.append("mov edx, 0 \n ");
+									CompileTakeValueLocalVariableToAssembler(_blockst,blocks[_blockst].insblock[j].ins[top].name);
+									codeAssembler.append("mov edx, eax \n ");
 								}
+								CompileNewLocalVariableIntToAssembler(_blockst, j, k, "edx");
 								break;
 							default:
 								break;
 							}
 						}
 						
-						CompileNewLocalVariableIntToAssembler(_blockst, j, k, "edx");
+						
 					}
 					else
 					{
@@ -254,6 +304,13 @@ int CompileToAssembler() {
 					if (blocks[i].insblock[j].ins[k].anndef == _COMPILE_ASSEMBLER_DEFINED) {
 						CompileDefntFunctionToAssembler(i, j, k);
 						h2++;
+						int bni = 0;
+						for (int bpi = 0; bpi < blocks[h2].parametrs.size(); bpi++)
+						{
+							bni += 4;
+							CompileCreateParamIntFunctionToAssembler(h2, bpi, 1, bni);
+							//CompileCreateParamIntFunctionToAssembler(h2, 1, 1, 8);
+						}
 						CompileBlockToAssembler(h2);
 						break;
 

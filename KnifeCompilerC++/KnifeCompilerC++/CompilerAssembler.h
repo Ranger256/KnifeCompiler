@@ -5,9 +5,6 @@
 #define _COMPILE_ASSEMBLER_SUCCESSFUL 0
 #define _COMPILE_ASSEMBLER_ERROR 1
 
-#define _COMPILE_ASSEMBLER_VARIABLE_NEW_INT_SUCCESSFUL 2
-#define _COMPILE_ASSEMBLER_VARIABLE_NEW_INT_ERROR 3
-
 #define _COMPILE_ASSEMBLER_VARIABLE_SET_INT_SUCCESSFUL 4
 #define _COMPILE_ASSEMBLER_VARIABLE_SET_INT_ERROR 5
 
@@ -25,6 +22,7 @@
 #include "compileAssemblerIncludes.h"
 #include "FunctionAssembler.h"
 #include "ReturnAssembler.h"
+#include "VariableAssembler.h"
 
 int CompileToAssembler();
 int CompileBlockToAssembler( int _blockst );
@@ -32,10 +30,10 @@ int CompileBlockToAssembler( int _blockst );
 int CompileNewGlobalVariableIntToAssembler(int blockst, int inst,int k, int valuev);
 int CompileSetGlobalVaraibleIntToAssembler(int blockst, int inst, int k, int valuev);
 int CompileNewLocalVariableIntToAssembler(int blockst, int inst, int k, int valuev);
-int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, int valuev);
+int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k);
 
 int CompileNewLocalVariableIntToAssembler(int blockst, int inst, int k, std::string valuev);
-int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, std::string valuev);
+//int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k, std::string valuev);
 
 #include "IfAssembler.h"
 
