@@ -15,10 +15,10 @@ std::map<std::string, symb> tablsymb;
 int main()
 {
 	// 
-	lexanCode("int i = 5; int kg = 3; int func(int f, int d){ int g = 5; f = 5 + i;}");
+	lexanCode("int i = 5; int kg = 3; int func(int a, int b){ b =  5+i + a; int ac = 4;} int main(int argc){func(3, 4);} int dg = 0;");
 	//std::vector<id> fs;
 	//std::vector<id> f;
-	//printf("%d\n", blocks[0].insblock[0].ins.size());
+	
 	//f.push_back(ids[13 + 5]);
 	//f.push_back(ids[14 + 5]);
 	//f.push_back(ids[15 + 5]);
@@ -30,7 +30,10 @@ int main()
 	//f.push_back(ids[21 + 5]);
 	//ParsingMathExpr (fs, f);
 	parsInit();
+	//printf("%s\n", "GG");
 	parsing();
+	
+	//printf("%s\n", blocks[2].insblock[0].ins[5].name.c_str());
 	CompileToAssembler();
   //
 	//for (int i = fs.size() - 1; i >= 0; i--)
@@ -39,7 +42,7 @@ int main()
 	//}
 	//CreatePostfixTokens(ids, ids);
 	printf("%s\n", codeAssembler.c_str());
-	//printf("%d\n", blocks[1].insblock[0].ins[0].anndef);
+	//printf("%d\n", blocks[2].variableLocalByteSize);
    //printf("%d\n", blocks[1].parametrs[0].ins[1].name.c_str());
 	while (true)
 	{

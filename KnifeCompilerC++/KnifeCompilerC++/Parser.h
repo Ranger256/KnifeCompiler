@@ -45,7 +45,7 @@ void parsInit();
 int createBlockParams(int blockn, int idsnum);
 int defType0(int bl);
 int parsing();
-int DADC(int idsi);
+int DADC(int idsi, int &i);
 
 #endif // !__PARSER__
 

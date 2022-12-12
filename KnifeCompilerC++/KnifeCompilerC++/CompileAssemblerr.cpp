@@ -145,7 +145,7 @@ int CompileSetLocalVariableIntToAssembler(int blockst, int inst, int k) {
 				CompileSetValueVariable(blockst, inst, k, top);
 				asmCode.append("mov dword[esp - ");
 				asmCode.append(std::to_string(blocks[blockst].localSymbols[blocks[blockst].insblock[inst].ins[k].name].number));
-				asmCode.append("], edx");
+				asmCode.append("], edx \n ");
 			}
 			else
 			{
@@ -218,6 +218,7 @@ int CompileBlockToAssembler(int _blockst) {
 				switch (blocks[_blockst].insblock[j].ins[k].anndef)
 				{
 				case _COMPILE_ASSEMBLER_CALLING:
+					CompileCallParamFunctionToAssembler(_blockst, j, k);
 					CompileCallFunctionToAssembler(_blockst, j, k);
 					break;
 				case _COMPILE_ASSEMBLER_SET_VARIABLE:
@@ -302,14 +303,18 @@ int CompileToAssembler() {
 				if (blocks[i].insblock[j].ins[k - 1].token == TOKEN_INT_TYPE)
 				{
 					if (blocks[i].insblock[j].ins[k].anndef == _COMPILE_ASSEMBLER_DEFINED) {
-						CompileDefntFunctionToAssembler(i, j, k);
+						
 						h2++;
-						int bni = 0;
-						for (int bpi = 0; bpi < blocks[h2].parametrs.size(); bpi++)
+						CompileDefntFunctionToAssembler(i, j, k, blocks[h2].variableLocalByteSize);
+						if (blocks[h2].parametrs[0].ins.size() > 0 && blocks[h2].parametrs.size() > 0)
 						{
-							bni += 4;
-							CompileCreateParamIntFunctionToAssembler(h2, bpi, 1, bni);
-							//CompileCreateParamIntFunctionToAssembler(h2, 1, 1, 8);
+							int bni = 0;
+							for (int bpi = 0; bpi < blocks[h2].parametrs.size(); bpi++)
+							{
+								bni += 4;
+								CompileCreateParamIntFunctionToAssembler(h2, bpi, 1, bni);
+								//CompileCreateParamIntFunctionToAssembler(h2, 1, 1, 8);
+							}
 						}
 						CompileBlockToAssembler(h2);
 						break;

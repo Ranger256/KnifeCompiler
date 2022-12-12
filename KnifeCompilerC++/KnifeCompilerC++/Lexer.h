@@ -59,6 +59,8 @@ typedef struct ident{
 	bool global;
 	int anndef;
 	int blc;
+	//WARNING
+//	std::vector<id> paramFUNC;
 } id;
 
 extern std::vector<id> ids;

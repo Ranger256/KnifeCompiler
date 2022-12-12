@@ -7,13 +7,15 @@ int bb = 0;
 int adids = 0;
 int idn = 0;
 int ad = 0;
+int idn2 = 0;
 
 void parsInit() {
 	blocks.push_back(block{});
 	blocks[0].insblock.push_back(instruct{});
 }
 
-int DADC(int idsi) {
+int DADC(int idsi, int &i) {
+	idn = idn2;
 	if (ids[idsi + 1].token == TOKEN_BRACKET_ROUND_OPEN)
 	{
 		adids = idsi;
@@ -23,20 +25,25 @@ int DADC(int idsi) {
 		while (true)
 		{
 			if (ids[ad].token == TOKEN_BRACKET_ROUND_CLOSE) {
-				idn = ad - 1;
+				idn = ad;
+				idn2 = idn;
 				ad++;
+				//i++;
 				break;
 			}
 			else
 			{
-
+				
+			//	if (ids[ad].token != TOKEN_BRACKET_ROUND_OPEN && ids[ad].token != TOKEN_BRACKET_ROUND_OPEN)
+				//{
+					//blocks[blocknum].insblock[instrnum].ins.push_back(ids[ad]);
+				//}
 				ad++;
 			}
 
 		}
 		ad++;
 		if (ids[ad - 1].token == TOKEN_BRACKET_CURLY_OPEN && ids[idsi - 1].token == TOKEN_INT_TYPE) {
-			
 			ids[idsi].anndef = _COMPILE_ASSEMBLER_DEFINED;
 			ids[idsi].blc = blocknum + 1;
 			ad++;
@@ -48,8 +55,11 @@ int DADC(int idsi) {
 		}
 		if (ids[ad - 1].token == TOKEN_END_SS)
 		{
+			printf("%s\n", "call");
 			ids[idsi].anndef = _COMPILE_ASSEMBLER_CALLING;
 			ad++;
+			idn = 0;
+			
 		}
 	}
 	else
@@ -153,7 +163,8 @@ int defType0(int bl) {
 	if (blocks[bl].insblock[in].ins.size() < 1)
 	{
 		in = blocks[bl ].insblock.size() - 2;
-	}
+    }
+	//printf("%d\n", bl);
 	
 	switch (blocks[bl].insblock[in].ins[0].token)
 	{
@@ -169,13 +180,17 @@ int defType0(int bl) {
 		return _COMPILE_ASSEMBLER_IF_FUNCTION;
 		break;
 	default:
+		//return _COMPILE_ASSEMBLER_UNDEFINED_ERROR;
 		break;
+		
 	}
+	
 	return _COMPILE_ASSEMBLER_UNDEFINED_ERROR;
 }
 
 int parsing() {
 	int adbrc = 0;
+	int bb1 = 0;
 
 	for (int i = 0; i < ids.size(); i++)
 	{
@@ -193,7 +208,7 @@ int parsing() {
 			//printf("%s\n", blocks[blocknum].insblock[blocks[blocknum].insblock.size() - 1].ins[0].name.c_str());
 			blocks.push_back(block{});
 			blocknum = blocks.size() - 1;
-			blocks[blocknum].type0 = defType0(blocknum - 1);
+		    blocks[blocknum].type0 = defType0(0);
 			blocks[blocknum].insblock.push_back(instruct{});
 			createBlockParams(blocknum, i);
 			//if (ids[adids - 1].token == TOKEN_ID)
@@ -221,8 +236,8 @@ int parsing() {
 			break;
 		case TOKEN_END_SS:
 			blocks[blocknum].insblock.push_back(instruct{});
-			//instrnum = blocks[blocknum].insblock.size() - 1;
-			instrnum++;
+			instrnum = blocks[blocknum].insblock.size() - 1;
+			//instrnum++;
 			break;
 		case TOKEN_ASSIGNMENT_SS:
 			if (blocknum > 0)
@@ -254,7 +269,7 @@ int parsing() {
 					}
 					else
 					{
-						adbrc++;
+					    adbrc++;
 						mv1.push_back(ids[adbrc]);
 					}
 					
@@ -274,7 +289,8 @@ int parsing() {
 			break;
 		case TOKEN_ID:
 			
-			DADC(i);
+			DADC(i, i);
+			//i++;
 			break;  
 		case TOKEN_IF_WORD:
 			if (ids[i + 1].token == TOKEN_BRACKET_ROUND_OPEN)
@@ -291,7 +307,7 @@ int parsing() {
 			if (! (i > adids && i < idn) )
 			{
 				
-				blocks[blocknum].insblock[instrnum].ins.push_back(ids[i]);
+				 blocks[blocknum].insblock[instrnum].ins.push_back(ids[i]);
 			}
 			else
 			{

@@ -18,8 +18,12 @@
 
 #include "compileAssemblerIncludes.h"
 
+struct pcf {
+	std::vector<id> pcfids;
+};
+
 int CompileAnucmntFunctionToAssembler(int block, int inst, int k);
-int CompileDefntFunctionToAssembler(int block, int inst, int k);
+int CompileDefntFunctionToAssembler(int block, int inst, int k, int vlbs);
 int CompileCallFunctionToAssembler(int block, int inst, int k);
 int CompileCreateParamIntFunctionToAssembler(int block, int inst, int k, int numberParam);
 int CompileCallParamFunctionToAssembler(int block, int inst, int k);
